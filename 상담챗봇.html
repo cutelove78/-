@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동탄조이컴 토탈 상담 챗봇</title>
+
+<style>
+body{margin:0;font-family:'Malgun Gothic',sans-serif;background:#f4f6f9;}
+.container{max-width:620px;margin:20px auto;background:#fff;
+border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.12);
+display:flex;flex-direction:column;height:92vh;}
+.header{background:#0d2c73;color:#fff;padding:18px;
+border-radius:20px 20px 0 0;font-weight:bold;font-size:16px;}
+.chat{flex:1;padding:15px;overflow-y:auto;font-size:14px;line-height:1.6;}
+.message{margin-bottom:14px;}
+.user{text-align:right;color:#222;}
+.bot{text-align:left;color:#0d2c73;}
+.input-area{display:flex;border-top:1px solid #ddd;}
+.input-area input{flex:1;padding:14px;border:none;outline:none;font-size:14px;}
+.input-area button{background:#0d2c73;color:#fff;border:none;padding:14px 18px;cursor:pointer;}
+.tabs{
+padding:10px;
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:6px;
+}
+.tabs button{
+padding:6px;
+border:none;
+background:#e8efff;
+border-radius:15px;
+cursor:pointer;
+font-size:11px;
+}
+.tabs button:hover{background:#cdd9ff;}
+</style>
+</head>
+
+<body>
+<div class="container">
+<div class="header">동탄조이컴 토탈 IT 전문 상담센터</div>
+
+<div class="chat" id="chatBox">
+<div class="message bot">
+안녕하세요 😊 동탄조이컴입니다.<br>
+원하시는 서비스를 선택하시거나 증상을 입력해주세요.
+</div>
+</div>
+
+<div class="tabs">
+<button onclick="quick('컴퓨터수리')">컴퓨터수리</button>
+<button onclick="quick('노트북수리')">노트북수리</button>
+<button onclick="quick('데이터복구')">데이터복구</button>
+<button onclick="quick('조립컴퓨터')">조립컴퓨터</button>
+<button onclick="quick('중고컴퓨터')">중고컴퓨터</button>
+<button onclick="quick('NAS공유기')">NAS공유기</button>
+
+<button onclick="quick('네트워크설치')">네트워크설치</button>
+<button onclick="quick('복합기프린터')">복합기프린터</button>
+<button onclick="quick('부팅안됨')">부팅안됨</button>
+<button onclick="quick('전원안켜짐')">전원안켜짐</button>
+<button onclick="quick('블루스크린')">블루스크린</button>
+<button onclick="quick('SSD교체')">SSD교체</button>
+
+<button onclick="quick('윈도우설치')">윈도우설치</button>
+<button onclick="quick('프로그램설치')">프로그램설치</button>
+<button onclick="quick('청소세척')">청소세척</button>
+<button onclick="quick('전화번호')">전화번호</button>
+<button onclick="quick('영업시간')">영업시간</button>
+<button onclick="quick('상담문의')">상담문의</button>
+</div>
+
+<div class="input-area">
+<input type="text" id="userInput" placeholder="예: 전원은 켜지는데 화면이 안나와요">
+<button onclick="send()">전송</button>
+</div>
+</div>
+
+<script>
+function send(){
+let input=document.getElementById("userInput");
+let msg=input.value.trim();
+if(msg==="")return;
+add(msg,"user");
+reply(msg);
+input.value="";
+}
+
+function quick(text){
+add(text,"user");
+reply(text);
+}
+
+function add(text,type){
+let box=document.getElementById("chatBox");
+let div=document.createElement("div");
+div.className="message "+type;
+div.innerHTML=text;
+box.appendChild(div);
+box.scrollTop=box.scrollHeight;
+}
+
+function reply(message){
+let r="자세한 증상을 입력해주시면 정확히 안내드리겠습니다 😊<br>☎ 010-8212-6548";
+
+if(message.includes("전화")){
+r="📞 동탄조이컴 연락처 안내<br><br>"
++"전화번호: 010-8212-6548<br>"
++"카드 / 현금 / 계좌이체 가능<br>"
++"세금계산서 발행 가능";
+}
+
+else if(message.includes("영업")){
+r="⏰ 영업시간 안내<br><br>"
++"평일 09:00 ~ 20:00<br>"
++"주말 09:00 ~ 18:00<br>"
++"설날 / 추석 당일 휴무";
+}
+
+else if(message.includes("컴퓨터수리")){
+r="💻 컴퓨터수리<br><br>"
++"✔ 부팅불가 / 속도저하 / 바이러스<br>"
++"✔ 메인보드 / 파워 / 그래픽카드 수리<br>"
++"✔ SSD 업그레이드 가능<br>"
++"✔ 점검 3만원부터";
+}
+
+else if(message.includes("노트북수리")){
+r="💻 노트북수리<br><br>"
++"✔ 액정교체 / 배터리교체<br>"
++"✔ 충전불량 / 침수세척<br>"
++"✔ 데이터 유지 수리 가능";
+}
+
+else if(message.includes("데이터")){
+r="💾 데이터복구<br><br>"
++"✔ 외장하드 / SSD / USB<br>"
++"✔ 삭제 / 포맷 복구<br>"
++"✔ 초기 진단 무료";
+}
+
+setTimeout(()=>add(r,"bot"),500);
+}
+
+// 엔터 자동 전송
+document.getElementById("userInput").addEventListener("keypress", function(e){
+if(e.key==="Enter"){
+send();
+}
+});
+</script>
+
+</body>
+</html>
